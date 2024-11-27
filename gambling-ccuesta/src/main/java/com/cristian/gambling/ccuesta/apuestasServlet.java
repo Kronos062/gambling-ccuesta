@@ -56,7 +56,7 @@ public class apuestasServlet extends HttpServlet {
         String resultado = request.getParameter("resultado");
         String dinero = request.getParameter("dinero");
 
-        String apuesta = nombre + "," + partido + "," + fecha + "," + resultado + "," + dinero;
+        String apuesta = "[" + nombre + "][" + partido + "][" + fecha + "][" + resultado + "][" + dinero + "]";
         apuestas.add(apuesta);
 
         try (PrintWriter out = response.getWriter()) {
@@ -95,7 +95,16 @@ public class apuestasServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String action = request.getParameter("action");
+        if ("delete".equals(action)) {
+            int index = Integer.parseInt(request.getParameter("index"));
+            if (index >= 0 && index < apuestas.size()) {
+                apuestas.remove(index);
+            }
+            response.sendRedirect("apuestasServlet");
+        } else {
+            processRequest(request, response);
+        }
     }
 
     /**
