@@ -40,7 +40,11 @@ public class apuestasServlet extends HttpServlet {
             out.println("<title>Detalles de la apuesta</title>");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet apuestasServlet at " + request.getContextPath() + "</h1>");
+            out.println("<h1>Detalles de la Apuesta</h1>");
+            out.println("<p>Nombre: " + nombre + "</p>");
+            out.println("<p>Partido: " + partido + "</p>");
+            out.println("<p>Resultado: " + resultado + "</p>");
+            out.println("<p>Dinero apostado: " + dinero + "</p>");
             out.println("</body>");
             out.println("</html>");
         }
