@@ -32,6 +32,11 @@ public class apuestasServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         
+        String nombre = request.getParameter("nombre");
+        String partido = request.getParameter("partido");
+        String resultado = request.getParameter("resultado");
+        String dinero = request.getParameter("dinero");
+        
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -86,7 +91,7 @@ public class apuestasServlet extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Short description";
+        return "Servlet de el gambling de cristian";
     }// </editor-fold>
 
 }
