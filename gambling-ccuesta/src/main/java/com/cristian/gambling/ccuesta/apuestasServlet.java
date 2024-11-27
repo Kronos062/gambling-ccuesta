@@ -34,6 +34,7 @@ public class apuestasServlet extends HttpServlet {
 
         String nombre = request.getParameter("nombre");
         String partido = request.getParameter("partido");
+        String fecha = request.getParameter("fecha");
         String resultado = request.getParameter("resultado");
         String dinero = request.getParameter("dinero");
 
@@ -48,7 +49,7 @@ public class apuestasServlet extends HttpServlet {
             out.println("<h1>Detalles de la Apuesta</h1>");
             out.println("<p>Nombre: " + nombre + "</p>");
             out.println("<p>Partido: " + partido + "</p>");
-            out.println("<p>Partido: " + partido + "</p>");
+            out.println("<p>Fecha: " + fecha + "</p>");
             out.println("<p>Resultado: " + resultado + "</p>");
             out.println("<p>Dinero apostado: " + dinero + "</p>");
             out.println("<a href='formulario.jsp'>Dale perro apuesta mas<a/>");
