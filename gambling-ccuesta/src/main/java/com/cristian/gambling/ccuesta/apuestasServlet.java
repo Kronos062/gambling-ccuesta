@@ -6,6 +6,9 @@ package com.cristian.gambling.ccuesta;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,6 +21,21 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "apuestasServlet", urlPatterns = {"/apuestasServlet"})
 public class apuestasServlet extends HttpServlet {
+
+    // Lista para almacenar las apuestas
+    private List<String> apuestas;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        // Inicializar la lista de apuestas en el ServletContext
+        ServletContext context = getServletContext();
+        apuestas = (List<String>) context.getAttribute("apuestas");
+        if (apuestas == null) {
+            apuestas = new ArrayList<>();
+            context.setAttribute("apuestas", apuestas);
+        }
+    }
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -37,6 +55,9 @@ public class apuestasServlet extends HttpServlet {
         String fecha = request.getParameter("fecha");
         String resultado = request.getParameter("resultado");
         String dinero = request.getParameter("dinero");
+        
+        String apuesta = nombre + "," + partido + "," + fecha + "," + resultado + "," + dinero;
+        apuestas.add(apuesta);
 
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
