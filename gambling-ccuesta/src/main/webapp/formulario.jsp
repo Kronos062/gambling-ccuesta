@@ -14,7 +14,7 @@
     </head>
     <body>
         <div>Haz tu apuesta</div>
-        <form action="ApuestasServlet" method="post">
+        <form action="apuestasServlet" method="post">
             Nombre:
             <input type="text" name="nombre"/>
             Partido:
