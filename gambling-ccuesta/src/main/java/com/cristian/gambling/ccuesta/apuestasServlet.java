@@ -31,12 +31,12 @@ public class apuestasServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         String nombre = request.getParameter("nombre");
         String partido = request.getParameter("partido");
         String resultado = request.getParameter("resultado");
         String dinero = request.getParameter("dinero");
-        
+
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
@@ -48,8 +48,10 @@ public class apuestasServlet extends HttpServlet {
             out.println("<h1>Detalles de la Apuesta</h1>");
             out.println("<p>Nombre: " + nombre + "</p>");
             out.println("<p>Partido: " + partido + "</p>");
+            out.println("<p>Partido: " + partido + "</p>");
             out.println("<p>Resultado: " + resultado + "</p>");
             out.println("<p>Dinero apostado: " + dinero + "</p>");
+            out.println("<a href='formulario.jsp'>Dale perro apuesta mas<a/>");
             out.println("</body>");
             out.println("</html>");
         }

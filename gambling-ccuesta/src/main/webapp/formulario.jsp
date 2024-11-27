@@ -13,16 +13,23 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-        <div>Haz tu apuesta</div>
+        <div><h1>Haz tu apuesta</h1></div>
         <form action="apuestasServlet" method="post">
             Nombre:
             <input type="text" name="nombre"/>
+            <br>
             Partido:
             <input type="text" name="partido"/>
+            <br>
+            Fecha:
+            <input type="text" name="fecha"/>
+            <br>
             Resultado:
             <input type="text" name="resultado"/>
+            <br>
             Dinero:
             <input type="text" name="dinero"/>
+            <br>
             <input type="submit" value="Enviar"/>
         </form>
     </body>
