@@ -9,10 +9,10 @@
 <!DOCTYPE html>
 <html lang="ca">
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
+        <meta http-equiv="Content-Type" name="viewport" content="text/html; charset=UTF-8">
+        <title>Modificar Apuesta</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+        <div><h1>Modificar Apuesta</h1></div>
     </body>
 </html>
