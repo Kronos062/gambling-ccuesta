@@ -14,5 +14,9 @@
     </head>
     <body>
         <div><h1>Modificar Apuesta</h1></div>
+        <%
+            String indexParam = request.getParameter("index");
+            int index = Integer.parseInt(indexParam);
+        %>  
     </body>
 </html>
