@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
+<%@page import="javax.servlet.ServletContext"%>
 <!DOCTYPE html>
 <html lang="ca">
     <head>
@@ -16,7 +17,10 @@
         <div><h1>Modificar Apuesta</h1></div>
         <%
             String indexParam = request.getParameter("index");
-            int index = Integer.parseInt(indexParam);
+            int index = -1;
+            if (indexParam != null) {
+                index = Integer.parseInt(indexParam);
+            }
 
             ServletContext context = getServletContext();
             List<String> apuestas = (List<String>) context.getAttribute("apuestas");
@@ -49,11 +53,11 @@
             <input type="hidden" name="index" value="<%= index%>"/>
             <input type="submit" value="Modificar"/>
         </form>
+        <%
         } else {
-        <%    
-            <p>Índice de apuesta no válido.< / p
-                    > <a href = "apuestasServlet" > Volver a la lista de apuestas</a >
         %>
+            <p>Índice de apuesta no válido.</p>
+            <a href = "apuestasServlet" > Volver a la lista de apuestas</a >
         <%
             }
         %>
