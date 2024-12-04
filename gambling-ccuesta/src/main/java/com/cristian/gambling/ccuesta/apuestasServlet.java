@@ -69,17 +69,19 @@ public class apuestasServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Detalles de la Apuesta</h1>");
-            out.println("<p>Nombre: " + nombre + "</p>");
-            out.println("<p>Partido: " + partido + "</p>");
-            out.println("<p>Fecha: " + fecha + "</p>");
-            out.println("<p>Resultado: " + resultado + "</p>");
-            out.println("<p>Dinero apostado: " + dinero + "</p>");
+            if (nombre != null) {
+                out.println("<p>Nombre: " + nombre + "</p>");
+                out.println("<p>Partido: " + partido + "</p>");
+                out.println("<p>Fecha: " + fecha + "</p>");
+                out.println("<p>Resultado: " + resultado + "</p>");
+                out.println("<p>Dinero apostado: " + dinero + "</p>");
+            }    
             out.println("<h2>Apuestas actuales:</h2>");
             if (apuestas.isEmpty()) {
                 out.println("<p>No hay apuestas registradas.</p>");
             } else {
                 for (int i = 0; i < apuestas.size(); i++) {
-                    out.println("<p>" + apuestas.get(i) + " <a href='apuestasServlet?action=delete&index=" + i + "'>Eliminar</a></p>");
+                    out.println("<p>" + apuestas.get(i) + " <a href='apuestasServlet?action=delete&index=" + i + "'>Eliminar</a></p>" + " <a href='formulario.jsp?index=" + i + "'>Modificar</a></p>");
                 }
                 out.println("<a href='formulario.jsp'>Apostar mas<a/>");
                 out.println("</body>");
