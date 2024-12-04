@@ -75,7 +75,7 @@ public class apuestasServlet extends HttpServlet {
                 out.println("<p>Fecha: " + fecha + "</p>");
                 out.println("<p>Resultado: " + resultado + "</p>");
                 out.println("<p>Dinero apostado: " + dinero + "</p>");
-            }    
+            }
             out.println("<h2>Apuestas actuales:</h2>");
             if (apuestas.isEmpty()) {
                 out.println("<p>No hay apuestas registradas.</p>");
@@ -126,7 +126,22 @@ public class apuestasServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String indexParam = request.getParameter("index");
+        if (indexParam != null) {
+            int index = Integer.parseInt(indexParam);
+            String nombre = request.getParameter("nombre");
+            String partido = request.getParameter("partido");
+            String fecha = request.getParameter("fecha");
+            String resultado = request.getParameter("resultado");
+            String dinero = request.getParameter("dinero");
+
+            if (index >= 0 && index < apuestas.size()) {
+                String apuesta = "[" + nombre + "][" + partido + "][" + fecha + "][" + resultado + "][" + dinero + "]";
+                apuestas.set(index, apuesta);
+            }
+        } else {
+            processRequest(request, response);
+        }
     }
 
     /**

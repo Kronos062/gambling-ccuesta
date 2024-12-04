@@ -29,11 +29,30 @@
                 String fecha = datosApuesta[2];
                 String resultado = datosApuesta[3];
                 String dinero = datosApuesta[4];
-        %>  
+        %> 
+        <form action="apuestasServlet" method="post">
+            Nombre:
+            <input type="text" name="nombre" value="<%= nombre%>" required/>
+            <br>
+            Partido:
+            <input type="text" name="partido" value="<%= partido%>" required/>
+            <br>
+            Fecha:
+            <input type="text" name="fecha" value="<%= fecha%>" required/>
+            <br>
+            Resultado:
+            <input type="text" name="resultado" value="<%= resultado%>" required/>
+            <br>
+            Dinero:
+            <input type="text" name="dinero" value="<%= dinero%>" required/>
+            <br>
+            <input type="hidden" name="index" value="<%= index%>"/>
+            <input type="submit" value="Modificar"/>
+        </form>
         } else {
         <%    
-            <p>Índice de apuesta no válido.</p>
-            <a href="apuestasServlet"> Volver a la lista de apuestas</a >
+            <p>Índice de apuesta no válido.< / p
+                    > <a href = "apuestasServlet" > Volver a la lista de apuestas</a >
         %>
         <%
             }
