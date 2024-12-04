@@ -79,6 +79,7 @@ public class apuestasServlet extends HttpServlet {
             out.println("<h2>Apuestas actuales:</h2>");
             if (apuestas.isEmpty()) {
                 out.println("<p>No hay apuestas registradas.</p>");
+                out.println("<a href='formulario.jsp'>Apostar mas<a/>");
             } else {
                 for (int i = 0; i < apuestas.size(); i++) {
                     out.println("<p>" + apuestas.get(i) + " <a href='apuestasServlet?action=delete&index=" + i + "'>Eliminar</a></p>" + " <a href='formulario.jsp?index=" + i + "'>Modificar</a></p>");
