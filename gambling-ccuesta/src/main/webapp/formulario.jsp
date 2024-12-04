@@ -16,21 +16,21 @@
         <div><h1>Haz tu apuesta</h1></div>
         <form action="apuestasServlet" method="post">
             Nombre:
-            <input type="text" name="nombre"/>
+            <input type="text" name="nombre" required/>
             <br>
             Partido:
-            <input type="text" name="partido"/>
+            <input type="text" name="partido" required/>
             <br>
             Fecha:
-            <input type="text" name="fecha"/>
+            <input type="text" name="fecha" required/>
             <br>
             Resultado:
-            <input type="text" name="resultado"/>
+            <input type="text" name="resultado" required/>
             <br>
             Dinero:
-            <input type="text" name="dinero"/>
+            <input type="text" name="dinero" required/>
             <br>
-            <input type="submit" value="Enviar"/>
+            <input type="submit" value="Enviar" required/>
         </form>
     </body>
 </html>
