@@ -7,7 +7,6 @@ package com.cristian.gambling.ccuesta;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,16 +20,62 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "apuestasServlet", urlPatterns = {"/apuestasServlet"})
 public class apuestasServlet extends HttpServlet {
+    private ArrayList<Apuesta> apuestas = new ArrayList<>();
 
-    // Lista para almacenar las apuestas
-    private List<String> apuestas;
+    class Apuesta {
+        private static int contador = 0;
+        private int id;
+        private String nombre;
+        private String partido;
+        private String fecha;
+        private String resultado;
+        private double dinero;
+
+        public Apuesta(String nombre, String partido, String fecha, String resultado, double dinero) {
+            this.id = ++contador;
+            this.nombre = nombre;
+            this.partido = partido;
+            this.fecha = fecha;
+            this.resultado = resultado;
+            this.dinero = dinero;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public String getNombre() {
+            return nombre;
+        }
+
+        public String getPartido() {
+            return partido;
+        }
+
+        public String getFecha() {
+            return fecha;
+        }
+
+        public String getResultado() {
+            return resultado;
+        }
+
+        public double getDinero() {
+            return dinero;
+        }
+
+        @Override
+        public String toString() {
+            return "[" + id + "][" + nombre + "][" + partido + "][" + fecha + "][" + resultado + "][" + dinero + "]";
+        }
+    }
 
     @Override
     public void init() throws ServletException {
         super.init();
         // Inicializar la lista de apuestas en el ServletContext
         ServletContext context = getServletContext();
-        apuestas = (List<String>) context.getAttribute("apuestas");
+        apuestas = (ArrayList<Apuesta>) context.getAttribute("apuestas");
         if (apuestas == null) {
             apuestas = new ArrayList<>();
             context.setAttribute("apuestas", apuestas);
@@ -57,11 +102,11 @@ public class apuestasServlet extends HttpServlet {
         String dinero = request.getParameter("dinero");
 
         if (nombre != null && partido != null && fecha != null && resultado != null && dinero != null) {
-            String apuesta = "[" + nombre + "][" + partido + "][" + fecha + "][" + resultado + "][" + dinero + "]";
-            apuestas.add(apuesta);
+            double dineroApostado = Double.parseDouble(dinero);
+            Apuesta nuevaApuesta = new Apuesta(nombre, partido, fecha, resultado, dineroApostado);
+            apuestas.add(nuevaApuesta);
         }
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -79,15 +124,15 @@ public class apuestasServlet extends HttpServlet {
             out.println("<h2>Apuestas actuales:</h2>");
             if (apuestas.isEmpty()) {
                 out.println("<p>No hay apuestas registradas.</p>");
-                out.println("<a href='formulario.jsp'>Apostar mas<a/>");
+                out.println("<a href='formulario.jsp'>Apostar más<a/>");
             } else {
                 for (int i = 0; i < apuestas.size(); i++) {
-                    out.println("<p>" + apuestas.get(i) + " <a href='apuestasServlet?action=delete&index=" + i + "'>Eliminar</a></p>" + " <a href='formulario.jsp?index=" + i + "'>Modificar</a></p>");
+                    out .println("<p>" + apuestas.get(i) + " <a href='apuestasServlet?action=delete&index=" + i + "'>Eliminar</a></p>" + " <a href='modificar.jsp?index=" + i + "'>Modificar</a></p>");
                 }
-                out.println("<a href='formulario.jsp'>Apostar mas<a/>");
-                out.println("</body>");
-                out.println("</html>");
+                out.println("<a href='formulario.jsp'>Apostar más<a/>");
             }
+            out.println("</body>");
+            out.println("</html>");
         }
     }
 
@@ -136,8 +181,9 @@ public class apuestasServlet extends HttpServlet {
             String dinero = request.getParameter("dinero");
 
             if (index >= 0 && index < apuestas.size()) {
-                String apuesta = "[" + nombre + "][" + partido + "][" + fecha + "][" + resultado + "][" + dinero + "]";
-                apuestas.set(index, apuesta);
+                double dineroApostado = Double.parseDouble(dinero);
+                Apuesta apuestaModificada = new Apuesta(nombre, partido, fecha, resultado, dineroApostado);
+                apuestas.set(index, apuestaModificada);
             }
         } else {
             processRequest(request, response);
@@ -153,5 +199,4 @@ public class apuestasServlet extends HttpServlet {
     public String getServletInfo() {
         return "Servlet de el gambling de cristian";
     }// </editor-fold>
-
 }

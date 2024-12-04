@@ -25,14 +25,16 @@
             ServletContext context = getServletContext();
             List<String> apuestas = (List<String>) context.getAttribute("apuestas");
 
-            if (index >= 0 && index < apuestas.size()) {
+            if (apuestas != null && index >= 0 && index < apuestas.size()) {
                 String apuesta = apuestas.get(index);
                 String[] datosApuesta = apuesta.replaceAll("[\\[\\]]", "").split("\\]\\[");
-                String nombre = datosApuesta[0];
-                String partido = datosApuesta[1];
-                String fecha = datosApuesta[2];
-                String resultado = datosApuesta[3];
-                String dinero = datosApuesta[4];
+
+                if (datosApuesta.length == 5) {
+                    String nombre = datosApuesta[0];
+                    String partido = datosApuesta[1];
+                    String fecha = datosApuesta[2];
+                    String resultado = datosApuesta[3];
+                    String dinero = datosApuesta[4];
         %> 
         <form action="apuestasServlet" method="post">
             Nombre:
@@ -56,8 +58,14 @@
         <%
         } else {
         %>
-            <p>Índice de apuesta no válido.</p>
-            <a href = "apuestasServlet" > Volver a la lista de apuestas</a >
+        <p>Error: La apuesta está mal formateada.</p>
+        <a href="apuestasServlet">Volver a la lista de apuestas</a>
+        <%
+            }
+            } else {
+        %>
+        <p>Índice de apuesta no válido.</p>
+        <a href = "apuestasServlet" > Volver a la lista de apuestas</a >
         <%
             }
         %>
