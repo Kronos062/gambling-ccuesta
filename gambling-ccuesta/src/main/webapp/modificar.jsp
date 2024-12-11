@@ -7,6 +7,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
 <%@page import="javax.servlet.ServletContext"%>
+<%@page import="com.cristian.gambling.ccuesta.Apuesta"%>
 <!DOCTYPE html>
 <html lang="ca">
     <head>
@@ -23,18 +24,15 @@
             }
 
             ServletContext context = getServletContext();
-            List<String> apuestas = (List<String>) context.getAttribute("apuestas");
+            List<Apuesta> apuestas = (List<Apuesta>) context.getAttribute("apuestas");
 
             if (apuestas != null && index >= 0 && index < apuestas.size()) {
-                String apuesta = apuestas.get(index);
-                String[] datosApuesta = apuesta.replaceAll("[\\[\\]]", "").split("\\]\\[");
-
-                if (datosApuesta.length == 5) {
-                    String nombre = datosApuesta[0];
-                    String partido = datosApuesta[1];
-                    String fecha = datosApuesta[2];
-                    String resultado = datosApuesta[3];
-                    String dinero = datosApuesta[4];
+                Apuesta apuesta = apuestas.get(index);
+                String nombre = apuesta.getNombre();
+                String partido = apuesta.getPartido();
+                String fecha = apuesta.getFecha();
+                String resultado = apuesta.getResultado();
+                double dinero = apuesta.getDinero();
         %> 
         <form action="apuestasServlet" method="post">
             Nombre:
@@ -60,12 +58,6 @@
         %>
         <p>Error: La apuesta está mal formateada.</p>
         <a href="apuestasServlet">Volver a la lista de apuestas</a>
-        <%
-            }
-            } else {
-        %>
-        <p>Índice de apuesta no válido.</p>
-        <a href = "apuestasServlet" > Volver a la lista de apuestas</a >
         <%
             }
         %>

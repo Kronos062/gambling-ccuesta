@@ -22,54 +22,6 @@ import javax.servlet.http.HttpServletResponse;
 public class apuestasServlet extends HttpServlet {
     private ArrayList<Apuesta> apuestas = new ArrayList<>();
 
-    class Apuesta {
-        private static int contador = 0;
-        private int id;
-        private String nombre;
-        private String partido;
-        private String fecha;
-        private String resultado;
-        private double dinero;
-
-        public Apuesta(String nombre, String partido, String fecha, String resultado, double dinero) {
-            this.id = ++contador;
-            this.nombre = nombre;
-            this.partido = partido;
-            this.fecha = fecha;
-            this.resultado = resultado;
-            this.dinero = dinero;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public String getNombre() {
-            return nombre;
-        }
-
-        public String getPartido() {
-            return partido;
-        }
-
-        public String getFecha() {
-            return fecha;
-        }
-
-        public String getResultado() {
-            return resultado;
-        }
-
-        public double getDinero() {
-            return dinero;
-        }
-
-        @Override
-        public String toString() {
-            return "[" + id + "][" + nombre + "][" + partido + "][" + fecha + "][" + resultado + "][" + dinero + "]";
-        }
-    }
-
     @Override
     public void init() throws ServletException {
         super.init();
