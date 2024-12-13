@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "apuestasServlet", urlPatterns = {"/apuestasServlet"})
 public class apuestasServlet extends HttpServlet {
+
     private ArrayList<Apuesta> apuestas = new ArrayList<>();
 
     @Override
@@ -78,8 +79,8 @@ public class apuestasServlet extends HttpServlet {
                 out.println("<p>No hay apuestas registradas.</p>");
                 out.println("<a href='formulario.jsp'>Apostar más<a/>");
             } else {
-                for (int i = 0; i < apuestas.size(); i++) {
-                    out .println("<p>" + apuestas.get(i) + " <a href='apuestasServlet?action=delete&index=" + i + "'>Eliminar</a></p>" + " <a href='modificar.jsp?index=" + i + "'>Modificar</a></p>");
+                for (Apuesta apuesta : apuestas) {
+                    out.println("<p>" + apuesta + " <a href='apuestasServlet?action=delete&id=" + apuesta.getId() + "'>Eliminar</a> <a href='modificar.jsp?id=" + apuesta.getId() + "'>Modificar</a></p>");
                 }
                 out.println("<a href='formulario.jsp'>Apostar más<a/>");
             }
@@ -88,7 +89,7 @@ public class apuestasServlet extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -102,10 +103,8 @@ public class apuestasServlet extends HttpServlet {
             throws ServletException, IOException {
         String action = request.getParameter("action");
         if ("delete".equals(action)) {
-            int index = Integer.parseInt(request.getParameter("index"));
-            if (index >= 0 && index < apuestas.size()) {
-                apuestas.remove(index);
-            }
+            int id = Integer.parseInt(request.getParameter("id"));
+            apuestas.removeIf(apuesta -> apuesta.getId() == id);
             response.sendRedirect("apuestasServlet");
         } else {
             processRequest(request, response);
@@ -123,22 +122,37 @@ public class apuestasServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String indexParam = request.getParameter("index");
-        if (indexParam != null) {
-            int index = Integer.parseInt(indexParam);
+        String idParam = request.getParameter("id");
+        if (idParam != null) {
+            int id = Integer.parseInt(idParam);
             String nombre = request.getParameter("nombre");
             String partido = request.getParameter("partido");
             String fecha = request.getParameter("fecha");
             String resultado = request.getParameter("resultado");
             String dinero = request.getParameter("dinero");
 
-            if (index >= 0 && index < apuestas.size()) {
-                double dineroApostado = Double.parseDouble(dinero);
-                Apuesta apuestaModificada = new Apuesta(nombre, partido, fecha, resultado, dineroApostado);
-                apuestas.set(index, apuestaModificada);
+            for (int i = 0; i < apuestas.size(); i++) {
+                if (apuestas.get(i).getId() == id) {
+                    double dineroApostado = Double.parseDouble(dinero);
+                    Apuesta apuestaModificada = new Apuesta(nombre, partido, fecha, resultado, dineroApostado);
+                    apuestas.set(i, apuestaModificada);
+                    break;
+                }
             }
+            response.sendRedirect("apuestasServlet");
         } else {
-            processRequest(request, response);
+            String nombre = request.getParameter("nombre");
+            String partido = request.getParameter("partido");
+            String fecha = request.getParameter("fecha");
+            String resultado = request.getParameter("resultado");
+            String dinero = request.getParameter("dinero");
+
+            if (nombre != null && partido != null && fecha != null && resultado != null && dinero != null) {
+                double dineroApostado = Double.parseDouble(dinero);
+                Apuesta nuevaApuesta = new Apuesta(nombre, partido, fecha, resultado, dineroApostado);
+                apuestas.add(nuevaApuesta);
+            }
+            response.sendRedirect("apuestasServlet");
         }
     }
 

@@ -17,23 +17,29 @@
     <body>
         <div><h1>Modificar Apuesta</h1></div>
         <%
-            String indexParam = request.getParameter("index");
-            int index = -1;
-            if (indexParam != null) {
-                index = Integer.parseInt(indexParam);
+            String idParam = request.getParameter("id");
+            int id = -1;
+            if (idParam != null) {
+                try {
+                    id = Integer.parseInt(idParam);
+                } catch (NumberFormatException e) {
+                    out.println("<p>Error: ID inválido.</p>");
+                    return;
+                }
             }
 
             ServletContext context = getServletContext();
             List<Apuesta> apuestas = (List<Apuesta>) context.getAttribute("apuestas");
-
-            if (apuestas != null && index >= 0 && index < apuestas.size()) {
-                Apuesta apuesta = apuestas.get(index);
-                String nombre = apuesta.getNombre();
-                String partido = apuesta.getPartido();
-                String fecha = apuesta.getFecha();
-                String resultado = apuesta.getResultado();
-                double dinero = apuesta.getDinero();
-        %> 
+            if (apuestas != null) {
+                final int finalId = id;
+                Apuesta apuesta = apuestas.stream().filter(a -> a.getId() == finalId).findFirst().orElse(null);
+                if (apuestas != null) {
+                    String nombre = apuesta.getNombre();
+                    String partido = apuesta.getPartido();
+                    String fecha = apuesta.getFecha();
+                    String resultado = apuesta.getResultado();
+                    double dinero = apuesta.getDinero();
+        %>  
         <form action="apuestasServlet" method="post">
             Nombre:
             <input type="text" name="nombre" value="<%= nombre%>" required/>
@@ -50,16 +56,20 @@
             Dinero:
             <input type="text" name="dinero" value="<%= dinero%>" required/>
             <br>
-            <input type="hidden" name="index" value="<%= index%>"/>
+            <input type="hidden" name="id" value="<%= id%>"/>
             <input type="submit" value="Modificar"/>
         </form>
         <%
         } else {
         %>
-        <p>Error: La apuesta está mal formateada.</p>
+        <p>Error: La apuesta no se encontró.</p>
         <a href="apuestasServlet">Volver a la lista de apuestas</a>
-        <%
-            }
+        <%    }
+        } else {
+        %>
+        <p>Error: La lista de apuestas es nula.</p>
+        <a href="apuestasServlet">Volver a la lista de apuestas</a>
+        <%    }
         %>
     </body>
 </html>
