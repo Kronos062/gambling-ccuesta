@@ -49,7 +49,7 @@
             <input type="text" name="resultado" value="<%= apuesta.getResultado()%>" required/>
             <br>
             Dinero:
-            <input type="number" name="dinero" value="<%= apuesta.getDinero()%>" required min="0"/>
+            <input type="number" name="dinero" value="<%= apuesta.getDinero()%>" required min="1"/>
             <br>
             <input type="submit" value="Modificar"/>
             <%
@@ -71,7 +71,7 @@
             <input type="text" name="resultado" required/>
             <br>
             Dinero:
-            <input type="text" name="dinero" required/>
+            <input type="number" name="dinero" required min="1"/>
             <br>
             <input type="submit" value="Enviar"/>
             <%
