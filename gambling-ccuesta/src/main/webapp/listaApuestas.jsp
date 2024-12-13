@@ -60,6 +60,6 @@
         <%
             }
         %>
-        <a href="index.jsp">Volver al inicio</a>
+        <a href="formulario.jsp">Volver al inicio</a>
     </body>
 </html>
