@@ -1,5 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.stream.Collectors"%>
 <%@page import="javax.servlet.ServletContext"%>
 <%@page import="com.cristian.gambling.ccuesta.Apuesta"%>
 <!DOCTYPE html>
@@ -13,12 +14,27 @@
         <div>
             <h1>Lista de Apuestas</h1>
         </div>
+        
+        <!-- Formulario de búsqueda -->
+        <form action="listaApuestas.jsp" method="get">
+            <label for="filtroNombre">Filtrar por nombre:</label>
+            <input type="text" id="filtroNombre" name="filtroNombre" value="${param.filtroNombre}">
+            <input type="submit" value="Filtrar">
+        </form>
+        
         <%
-            // Obtener el contexto de la aplicación
             ServletContext context = getServletContext();
             List<Apuesta> apuestas = (List<Apuesta>) context.getAttribute("apuestas");
-
+            String filtroNombre = request.getParameter("filtroNombre");
+            
             if (apuestas != null && !apuestas.isEmpty()) {
+                if (filtroNombre != null && !filtroNombre.isEmpty()) {
+                    apuestas = apuestas.stream()
+                        .filter(a -> a.getNombre().toLowerCase().contains(filtroNombre.toLowerCase()))
+                        .collect(Collectors.toList());
+                }
+                
+                if (!apuestas.isEmpty()) {
         %>
         <table>
             <thead>
@@ -54,7 +70,12 @@
             </tbody>
         </table>
         <%
-        } else {
+                } else {
+        %>
+        <p>No se encontraron apuestas con el nombre especificado.</p>
+        <%
+                }
+            } else {
         %>
         <p>No hay apuestas disponibles.</p>
         <%
