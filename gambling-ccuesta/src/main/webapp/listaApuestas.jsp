@@ -14,18 +14,6 @@
         <div>
             <h1>Lista de Apuestas</h1>
         </div>
-
-        <a href="filtroAvanzado.jsp" class="btn btn-primary">Filtro por rango de dinero y usuario</a>
-
-        <form action="listaApuestas.jsp" method="get">
-            <label for="filtroNombre">Filtrar por nombre:</label>
-            <input type="text" id="filtroNombre" name="filtroNombre" value="${param.filtroNombre}">
-            <label for="filtroFecha">Filtrar por fecha:</label>
-            <input type="text" id="filtroFecha" name="filtroFecha" value="${param.filtroFecha}">
-            <input type="submit" value="Filtrar">
-        </form>
-
-
         <%
             ServletContext context = getServletContext();
             List<Apuesta> apuestas = (List<Apuesta>) context.getAttribute("apuestas");
@@ -42,7 +30,7 @@
 
                 if (!apuestas.isEmpty()) {
         %>
-        <table>
+        <table border="1">
             <thead>
                 <tr>
                     <th>ID</th>
@@ -90,6 +78,22 @@
         <%
             }
         %>
-        <a href="formulario.jsp">Volver al inicio</a>
+        <br>
+        <a href="apuestasGanadoras.jsp" class="btn btn-success">Ver Apuestas Ganadoras</a>
+        <br>
+        <br>
+        <a href="filtroAvanzado.jsp" class="btn btn-primary">Filtro por rango de dinero y usuario</a>
+        <br>
+        <br>
+        <form action="listaApuestas.jsp" method="get">
+            <label for="filtroNombre">Filtrar por nombre:</label>
+            <input type="text" id="filtroNombre" name="filtroNombre" value="${param.filtroNombre}">
+            <label for="filtroFecha">Filtrar por fecha:</label>
+            <input type="text" id="filtroFecha" name="filtroFecha" value="${param.filtroFecha}">
+            <input type="submit" value="Filtrar">
+        </form>
+        <br>
+        <br>
+        <a href="formulario.jsp">Apuesta más</a>
     </body>
 </html>
