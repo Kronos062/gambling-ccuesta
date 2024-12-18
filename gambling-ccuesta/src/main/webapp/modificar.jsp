@@ -39,8 +39,8 @@
                     String fecha = apuesta.getFecha();
                     String resultado = apuesta.getResultado();
                     double dinero = apuesta.getDinero();
-                    String competicion = request.getParameter("competicion");
-                    boolean apuestaGanadora = Boolean.parseBoolean(request.getParameter("apuestaGanadora"));
+                    String competicion = apuesta.getCompeticion();
+                    boolean apuestaGanadora = apuesta.isApuestaGanadora();
         %>  
         <form action="apuestasServlet" method="post">
             Nombre:

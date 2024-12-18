@@ -51,6 +51,12 @@
             Dinero:
             <input type="number" name="dinero" value="<%= apuesta.getDinero()%>" required min="1"/>
             <br>
+            Competición:
+            <input type="text" name="competicion" value="<%= apuesta.getCompeticion()%>" required/>
+            <br>
+            Apuesta Ganadora:
+            <input type="checkbox" name="apuestaGanadora" value="true"/>
+            <br>
             <input type="submit" value="Modificar"/>
             <%
                 } else {
