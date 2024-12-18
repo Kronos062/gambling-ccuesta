@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author ubuntu
  */
-
 @WebServlet(name = "apuestasServlet", urlPatterns = {"/apuestasServlet"})
 public class apuestasServlet extends HttpServlet {
 
@@ -46,7 +45,6 @@ public class apuestasServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -56,10 +54,12 @@ public class apuestasServlet extends HttpServlet {
         String fecha = request.getParameter("fecha");
         String resultado = request.getParameter("resultado");
         String dinero = request.getParameter("dinero");
+        String competicion = request.getParameter("competicion");
+        boolean apuestaGanadora = Boolean.parseBoolean(request.getParameter("apuestaGanadora"));
 
         if (nombre != null && partido != null && fecha != null && resultado != null && dinero != null) {
             double dineroApostado = Double.parseDouble(dinero);
-            Apuesta nuevaApuesta = new Apuesta(nombre, partido, fecha, resultado, dineroApostado);
+            Apuesta nuevaApuesta = new Apuesta(nombre, partido, fecha, resultado, dineroApostado, competicion, apuestaGanadora);
             apuestas.add(nuevaApuesta);
         }
 
@@ -67,8 +67,8 @@ public class apuestasServlet extends HttpServlet {
         List<Apuesta> apuestasFiltradas = apuestas;
         if (filtroNombre != null && !filtroNombre.isEmpty()) {
             apuestasFiltradas = apuestas.stream()
-                .filter(a -> a.getNombre().toLowerCase().contains(filtroNombre.toLowerCase()))
-                .collect(Collectors.toList());
+                    .filter(a -> a.getNombre().toLowerCase().contains(filtroNombre.toLowerCase()))
+                    .collect(Collectors.toList());
         }
 
         try (PrintWriter out = response.getWriter()) {
@@ -104,7 +104,7 @@ public class apuestasServlet extends HttpServlet {
             out.println("</html>");
         }
     }
-    
+
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -135,7 +135,6 @@ public class apuestasServlet extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -147,11 +146,13 @@ public class apuestasServlet extends HttpServlet {
             String fecha = request.getParameter("fecha");
             String resultado = request.getParameter("resultado");
             String dinero = request.getParameter("dinero");
+            String competicion = request.getParameter("competicion");
+            boolean apuestaGanadora = Boolean.parseBoolean(request.getParameter("apuestaGanadora"));
 
             for (int i = 0; i < apuestas.size(); i++) {
                 if (apuestas.get(i).getId() == id) {
                     double dineroApostado = Double.parseDouble(dinero);
-                    Apuesta apuestaModificada = new Apuesta(nombre, partido, fecha, resultado, dineroApostado);
+                    Apuesta apuestaModificada = new Apuesta(nombre, partido, fecha, resultado, dineroApostado, competicion, apuestaGanadora);
                     apuestas.set(i, apuestaModificada);
                     break;
                 }
@@ -163,10 +164,12 @@ public class apuestasServlet extends HttpServlet {
             String fecha = request.getParameter("fecha");
             String resultado = request.getParameter("resultado");
             String dinero = request.getParameter("dinero");
+            String competicion = request.getParameter("competicion");
+            boolean apuestaGanadora = Boolean.parseBoolean(request.getParameter("apuestaGanadora"));
 
             if (nombre != null && partido != null && fecha != null && resultado != null && dinero != null) {
                 double dineroApostado = Double.parseDouble(dinero);
-                Apuesta nuevaApuesta = new Apuesta(nombre, partido, fecha, resultado, dineroApostado);
+                Apuesta nuevaApuesta = new Apuesta(nombre, partido, fecha, resultado, dineroApostado, competicion, apuestaGanadora);
                 apuestas.add(nuevaApuesta);
             }
             response.sendRedirect("apuestasServlet");
@@ -178,7 +181,6 @@ public class apuestasServlet extends HttpServlet {
      *
      * @return a String containing servlet description
      */
-
     @Override
     public String getServletInfo() {
         return "Servlet de el gambling de cristian";

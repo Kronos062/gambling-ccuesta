@@ -39,6 +39,8 @@
                     String fecha = apuesta.getFecha();
                     String resultado = apuesta.getResultado();
                     double dinero = apuesta.getDinero();
+                    String competicion = request.getParameter("competicion");
+                    boolean apuestaGanadora = Boolean.parseBoolean(request.getParameter("apuestaGanadora"));
         %>  
         <form action="apuestasServlet" method="post">
             Nombre:
@@ -55,6 +57,12 @@
             <br>
             Dinero:
             <input type="text" name="dinero" value="<%= dinero%>" required/>
+            <br>
+            Competición:
+            <input type="text" name="competicion" value="<%= competicion%>" required/>
+            <br>
+            Apuesta Ganadora:
+            <input type="checkbox" name="apuestaGanadora" value="true" <%= apuesta.isApuestaGanadora() ? "checked" : ""%>/>
             <br>
             <input type="hidden" name="id" value="<%= id%>"/>
             <input type="submit" value="Modificar"/>

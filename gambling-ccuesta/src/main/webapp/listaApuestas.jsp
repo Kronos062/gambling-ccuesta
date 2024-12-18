@@ -14,26 +14,26 @@
         <div>
             <h1>Lista de Apuestas</h1>
         </div>
-        
+
         <!-- Formulario de búsqueda -->
         <form action="listaApuestas.jsp" method="get">
             <label for="filtroNombre">Filtrar por nombre:</label>
             <input type="text" id="filtroNombre" name="filtroNombre" value="${param.filtroNombre}">
             <input type="submit" value="Filtrar">
         </form>
-        
+
         <%
             ServletContext context = getServletContext();
             List<Apuesta> apuestas = (List<Apuesta>) context.getAttribute("apuestas");
             String filtroNombre = request.getParameter("filtroNombre");
-            
+
             if (apuestas != null && !apuestas.isEmpty()) {
                 if (filtroNombre != null && !filtroNombre.isEmpty()) {
                     apuestas = apuestas.stream()
-                        .filter(a -> a.getNombre().toLowerCase().contains(filtroNombre.toLowerCase()))
-                        .collect(Collectors.toList());
+                            .filter(a -> a.getNombre().toLowerCase().contains(filtroNombre.toLowerCase()))
+                            .collect(Collectors.toList());
                 }
-                
+
                 if (!apuestas.isEmpty()) {
         %>
         <table>
@@ -46,6 +46,8 @@
                     <th>Resultado</th>
                     <th>Dinero</th>
                     <th>Acciones</th>
+                    <th>Competición</th>
+                    <th>Apuesta Ganadora</th>
                 </tr>
             </thead>
             <tbody>
@@ -59,6 +61,8 @@
                     <td><%= apuesta.getFecha()%></td>
                     <td><%= apuesta.getResultado()%></td>
                     <td><%= apuesta.getDinero()%></td>
+                    <td><%= apuesta.getCompeticion()%></td>
+                    <td><%= apuesta.isApuestaGanadora() ? "Sí" : "No"%></td>
                     <td>
                         <a href="modificar.jsp?id=<%= apuesta.getId()%>">Modificar</a>
                         <a href="apuestasServlet?action=delete&id=<%= apuesta.getId()%>" style="color: red; margin-left: 10px;">Eliminar</a>
@@ -70,12 +74,12 @@
             </tbody>
         </table>
         <%
-                } else {
+        } else {
         %>
         <p>No se encontraron apuestas con el nombre especificado.</p>
         <%
-                }
-            } else {
+            }
+        } else {
         %>
         <p>No hay apuestas disponibles.</p>
         <%

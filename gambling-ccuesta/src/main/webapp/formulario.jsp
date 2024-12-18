@@ -73,6 +73,13 @@
             Dinero:
             <input type="number" name="dinero" required min="1"/>
             <br>
+            Competición:
+            <input type="text" name="competicion" required/>
+            <br>
+            Apuesta Ganadora:
+            <input type="checkbox" name="apuestaGanadora" value="true"/>
+            <br>
+
             <input type="submit" value="Enviar"/>
             <%
                 }
