@@ -15,6 +15,8 @@
             <h1>Lista de Apuestas</h1>
         </div>
 
+        <a href="filtroAvanzado.jsp" class="btn btn-primary">Filtro por rango de dinero y usuario</a>
+
         <form action="listaApuestas.jsp" method="get">
             <label for="filtroNombre">Filtrar por nombre:</label>
             <input type="text" id="filtroNombre" name="filtroNombre" value="${param.filtroNombre}">
@@ -34,7 +36,7 @@
                 if ((filtroNombre != null && !filtroNombre.isEmpty()) || (filtroFecha != null && !filtroFecha.isEmpty())) {
                     apuestas = apuestas.stream()
                             .filter(a -> (filtroNombre == null || filtroNombre.isEmpty() || a.getNombre().toLowerCase().contains(filtroNombre.toLowerCase()))
-                                      && (filtroFecha == null || filtroFecha.isEmpty() || a.getFecha().equals(filtroFecha)))
+                            && (filtroFecha == null || filtroFecha.isEmpty() || a.getFecha().equals(filtroFecha)))
                             .collect(Collectors.toList());
                 }
 

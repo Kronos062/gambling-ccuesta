@@ -139,6 +139,21 @@ public class apuestasServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             apuestas.removeIf(apuesta -> apuesta.getId() == id);
             response.sendRedirect("listaApuestas.jsp");
+        } else if ("filtroAvanzado".equals(action)) {
+            String usuario = request.getParameter("usuario");
+            String minApuestaStr = request.getParameter("minApuesta");
+            String maxApuestaStr = request.getParameter("maxApuesta");
+
+            double minApuesta = minApuestaStr != null && !minApuestaStr.isEmpty() ? Double.parseDouble(minApuestaStr) : Double.MIN_VALUE;
+            double maxApuesta = maxApuestaStr != null && !maxApuestaStr.isEmpty() ? Double.parseDouble(maxApuestaStr) : Double.MAX_VALUE;
+
+            List<Apuesta> apuestasFiltradas = apuestas.stream()
+                    .filter(a -> (usuario == null || usuario.isEmpty() || a.getNombre().toLowerCase().contains(usuario.toLowerCase()))
+                    && (a.getDinero() >= minApuesta && a.getDinero() <= maxApuesta))
+                    .collect(Collectors.toList());
+
+            request.setAttribute("apuestasFiltradas", apuestasFiltradas);
+            request.getRequestDispatcher("filtroAvanzado.jsp").forward(request, response);
         } else {
             String filtroNombre = request.getParameter("filtroNombre");
             String filtroFecha = request.getParameter("filtroFecha");
