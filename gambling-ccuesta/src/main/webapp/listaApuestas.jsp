@@ -15,22 +15,26 @@
             <h1>Lista de Apuestas</h1>
         </div>
 
-        <!-- Formulario de búsqueda -->
         <form action="listaApuestas.jsp" method="get">
             <label for="filtroNombre">Filtrar por nombre:</label>
             <input type="text" id="filtroNombre" name="filtroNombre" value="${param.filtroNombre}">
+            <label for="filtroFecha">Filtrar por fecha:</label>
+            <input type="text" id="filtroFecha" name="filtroFecha" value="${param.filtroFecha}">
             <input type="submit" value="Filtrar">
         </form>
+
 
         <%
             ServletContext context = getServletContext();
             List<Apuesta> apuestas = (List<Apuesta>) context.getAttribute("apuestas");
             String filtroNombre = request.getParameter("filtroNombre");
+            String filtroFecha = request.getParameter("filtroFecha");
 
             if (apuestas != null && !apuestas.isEmpty()) {
-                if (filtroNombre != null && !filtroNombre.isEmpty()) {
+                if ((filtroNombre != null && !filtroNombre.isEmpty()) || (filtroFecha != null && !filtroFecha.isEmpty())) {
                     apuestas = apuestas.stream()
-                            .filter(a -> a.getNombre().toLowerCase().contains(filtroNombre.toLowerCase()))
+                            .filter(a -> (filtroNombre == null || filtroNombre.isEmpty() || a.getNombre().toLowerCase().contains(filtroNombre.toLowerCase()))
+                                      && (filtroFecha == null || filtroFecha.isEmpty() || a.getFecha().equals(filtroFecha)))
                             .collect(Collectors.toList());
                 }
 
@@ -45,7 +49,6 @@
                     <th>Fecha</th>
                     <th>Resultado</th>
                     <th>Dinero</th>
-                    <th>Acciones</th>
                     <th>Competición</th>
                     <th>Apuesta Ganadora</th>
                 </tr>

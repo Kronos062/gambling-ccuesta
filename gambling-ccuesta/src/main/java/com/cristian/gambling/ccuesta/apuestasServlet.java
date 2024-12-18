@@ -64,10 +64,19 @@ public class apuestasServlet extends HttpServlet {
         }
 
         String filtroNombre = request.getParameter("filtroNombre");
+        String filtroFecha = request.getParameter("filtroFecha");
+
         List<Apuesta> apuestasFiltradas = apuestas;
+
         if (filtroNombre != null && !filtroNombre.isEmpty()) {
-            apuestasFiltradas = apuestas.stream()
+            apuestasFiltradas = apuestasFiltradas.stream()
                     .filter(a -> a.getNombre().toLowerCase().contains(filtroNombre.toLowerCase()))
+                    .collect(Collectors.toList());
+        }
+
+        if (filtroFecha != null && !filtroFecha.isEmpty()) {
+            apuestasFiltradas = apuestasFiltradas.stream()
+                    .filter(a -> a.getFecha().equals(filtroFecha))
                     .collect(Collectors.toList());
         }
 
@@ -79,6 +88,7 @@ public class apuestasServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Detalles de la Apuesta</h1>");
+
             if (nombre != null) {
                 out.println("<p>Nombre: " + nombre + "</p>");
                 out.println("<p>Partido: " + partido + "</p>");
@@ -86,19 +96,26 @@ public class apuestasServlet extends HttpServlet {
                 out.println("<p>Resultado: " + resultado + "</p>");
                 out.println("<p>Dinero apostado: " + dinero + "</p>");
             }
+
             out.println("<h2>Apuestas actuales:</h2>");
             out.println("<form action='apuestasServlet' method='get'>");
             out.println("<label for='filtroNombre'>Filtrar por nombre:</label>");
             out.println("<input type='text' id='filtroNombre' name='filtroNombre' value='" + (filtroNombre != null ? filtroNombre : "") + "'>");
+            out.println("<label for='filtroFecha'>Filtrar por fecha:</label>");
+            out.println("<input type='text' id='filtroFecha' name='filtroFecha' value='" + (filtroFecha != null ? filtroFecha : "") + "'>");
             out.println("<input type='submit' value='Filtrar'>");
             out.println("</form>");
+
             if (apuestasFiltradas.isEmpty()) {
-                out.println("<p>No hay apuestas registradas.</p>");
+                out.println("<p>No hay apuestas registradas con los criterios especificados.</p>");
             } else {
                 for (Apuesta apuesta : apuestasFiltradas) {
-                    out.println("<p>" + apuesta + " <a href='apuestasServlet?action=delete&id=" + apuesta.getId() + "'>Eliminar</a> <a href='modificar.jsp?id=" + apuesta.getId() + "'>Modificar</a></p>");
+                    out.println("<p>" + apuesta
+                            + " <a href='apuestasServlet?action=delete&id=" + apuesta.getId() + "'>Eliminar</a> "
+                            + "<a href='modificar.jsp?id=" + apuesta.getId() + "'>Modificar</a></p>");
                 }
             }
+
             out.println("<a href='formulario.jsp'>Apostar más<a/>");
             out.println("</body>");
             out.println("</html>");
@@ -121,9 +138,21 @@ public class apuestasServlet extends HttpServlet {
         if ("delete".equals(action)) {
             int id = Integer.parseInt(request.getParameter("id"));
             apuestas.removeIf(apuesta -> apuesta.getId() == id);
-            response.sendRedirect("apuestasServlet");
+            response.sendRedirect("listaApuestas.jsp");
         } else {
-            processRequest(request, response);
+            String filtroNombre = request.getParameter("filtroNombre");
+            String filtroFecha = request.getParameter("filtroFecha");
+
+            List<Apuesta> apuestasFiltradas = apuestas;
+            if ((filtroNombre != null && !filtroNombre.isEmpty()) || (filtroFecha != null && !filtroFecha.isEmpty())) {
+                apuestasFiltradas = apuestas.stream()
+                        .filter(a -> (filtroNombre == null || filtroNombre.isEmpty() || a.getNombre().toLowerCase().contains(filtroNombre.toLowerCase()))
+                        && (filtroFecha == null || filtroFecha.isEmpty() || a.getFecha().equals(filtroFecha)))
+                        .collect(Collectors.toList());
+            }
+
+            request.setAttribute("apuestasFiltradas", apuestasFiltradas);
+            request.getRequestDispatcher("listaApuestas.jsp").forward(request, response);
         }
     }
 
@@ -181,6 +210,12 @@ public class apuestasServlet extends HttpServlet {
      *
      * @return a String containing servlet description
      */
+    private List<Apuesta> filtrarApuestasPorPartido(String partido, String fecha) {
+        return apuestas.stream()
+                .filter(a -> a.getPartido().equals(partido) && a.getFecha().equals(fecha))
+                .collect(Collectors.toList());
+    }
+
     @Override
     public String getServletInfo() {
         return "Servlet de el gambling de cristian";
